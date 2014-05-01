@@ -1,0 +1,29 @@
+#recipeHolder{
+  width: 50%;
+  text-align: center;
+}
+#listOfRecipes{
+  text-align: left;
+}
+
+#searchBar{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+#newRecipeButton{
+  position: absolute;
+  top: 65px;
+  right: 15px;
+}
+#newRecipe{
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  color: white;
+  background-color: rgba(0,0,0,.9);
+}

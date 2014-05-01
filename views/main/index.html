@@ -1,0 +1,82 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" href="{{=URL('static','css/main/index.css')}}" />
+
+<div id="recipeHolder">
+  <h2>Recipes</h2>
+  <div id="listOfRecipes"></div>
+</div>
+<div id="searchBar">
+  <input placeholder="Search" id="searchBarInput" type="text" value="" />
+</div>
+<input id="newRecipeButton" type="button" class="btn" value="New Recipe" />
+<div id="newRecipe">
+  <center>
+    <h1>New Recipe</h1>
+    {{=form}}
+  </center>
+</div>
+
+<script type="text/javascript">
+
+  var listOfRecipes = [];
+  var listOfCategories = [];
+  var visibleRecipesInCategory = {};
+
+  {{for recipe in recipes:}}
+    if(!$('#{{=recipe.category.replace(" ","_")}}').length){
+      $('#listOfRecipes').append('<h3>{{=recipe.category}}</h3><div class="category" id="{{=recipe.category.replace(" ","_")}}"></div>');
+    }
+    $('#{{=recipe.category.replace(" ","_")}}').append('<a category="{{=recipe.category.replace(" ", "_")}}" class="recipe" href="">{{=recipe.title}}</a><br />');
+    listOfRecipes.push("{{=recipe.title}}");
+    listOfCategories.push("{{=recipe.category}}");
+    if(visibleRecipesInCategory.{{=recipe.category.replace(" ", "_")}} == undefined){
+      visibleRecipesInCategory.{{=recipe.category.replace(" ", "_")}} = 1;
+    }else{
+      visibleRecipesInCategory.{{=recipe.category.replace(" ", "_")}}++;
+    }
+  {{pass}}
+
+  $('#listOfRecipes').accordion({
+    collapsible: true,
+  });
+
+  $("#searchBarInput").autocomplete({
+    delay: 500,
+    source: listOfRecipes,
+    response: function(event, ui){
+      hideRecipes($("#searchBarInput").val());
+    },
+  });
+
+  $(".category>a").css({display:"block"});
+  function hideRecipes(value){
+    $(".category>a").each(function(){
+
+      //If the recipe is in the search then show it
+      if($(this).html().indexOf(value) > -1){
+        if($(this).css("display")=="none"){
+          visibleRecipesInCategory[$(this).attr("category")]++;
+        }
+        $(this).show();
+      }else{
+        if($(this).css("display")=="block"){
+          visibleRecipesInCategory[$(this).attr("category")]--;
+        }
+        $(this).hide();
+      }
+    });
+    for(x in visibleRecipesInCategory){
+      if(visibleRecipesInCategory[x]<=0){
+        $("#"+x).hide();
+        $("#"+x).prev().hide();
+      }else{
+        $("#"+x).show();
+        $("#"+x).prev().show();
+      }
+    }
+  };
+
+  $("#newRecipeButton").click(function(){ $("#newRecipe").show(); });
+
+</script>
