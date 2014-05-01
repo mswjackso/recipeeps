@@ -5,12 +5,14 @@
 <div id="recipeHolder">
   <h2>Recipes</h2>
   <div id="listOfRecipes"></div>
+  <br /><br />
 </div>
 <div id="searchBar">
   <input placeholder="Search" id="searchBarInput" type="text" value="" />
 </div>
 <input id="newRecipeButton" type="button" class="btn" value="New Recipe" />
 <div id="newRecipe">
+  <div id="newRecipeClose">X</div>
   <center>
     <h1>New Recipe</h1>
     {{=form}}
@@ -18,18 +20,30 @@
 </div>
 
 <script type="text/javascript">
-
+  
+  $.widget( "custom.catcomplete", $.ui.autocomplete, {
+    _renderMenu: function( ul, items ) {
+      var that = this,
+        currentCategory = "";
+      $.each( items, function( index, item ) {
+        if ( item.category != currentCategory ) {
+          ul.append( "<li class='ui-autocomplete-category'><strong>" + item.category + "</strong></li>" );
+          currentCategory = item.category;
+        }
+        that._renderItemData( ul, item );
+      });
+    }
+  });
+  
   var listOfRecipes = [];
-  var listOfCategories = [];
   var visibleRecipesInCategory = {};
 
   {{for recipe in recipes:}}
     if(!$('#{{=recipe.category.replace(" ","_")}}').length){
       $('#listOfRecipes').append('<h3>{{=recipe.category}}</h3><div class="category" id="{{=recipe.category.replace(" ","_")}}"></div>');
     }
-    $('#{{=recipe.category.replace(" ","_")}}').append('<a category="{{=recipe.category.replace(" ", "_")}}" class="recipe" href="">{{=recipe.title}}</a><br />');
-    listOfRecipes.push("{{=recipe.title}}");
-    listOfCategories.push("{{=recipe.category}}");
+    $('#{{=recipe.category.replace(" ","_")}}').append('<a category="{{=recipe.category.replace(" ", "_")}}" class="recipe" href="{{=URL("main", "recipe", args=recipe.title.replace(" ","_"))}}">{{=recipe.title}}</a>');
+    listOfRecipes.push({ label: "{{=recipe.title}}", category:"{{=recipe.category}}"});
     if(visibleRecipesInCategory.{{=recipe.category.replace(" ", "_")}} == undefined){
       visibleRecipesInCategory.{{=recipe.category.replace(" ", "_")}} = 1;
     }else{
@@ -39,22 +53,32 @@
 
   $('#listOfRecipes').accordion({
     collapsible: true,
+    heightStyle: "content",
   });
 
-  $("#searchBarInput").autocomplete({
+  $("#searchBarInput").catcomplete({
     delay: 500,
     source: listOfRecipes,
     response: function(event, ui){
       hideRecipes($("#searchBarInput").val());
     },
   });
-
+  $("#searchBarInput").keyup(function(){
+    if($("#searchBarInput").val()==""){
+      hideRecipes("");
+    }
+  });
+  $(".ui-corner-all").click(function(){
+    console.log($("#searchBarInput").val());
+    hideRecipes($("#searchBarInput").val());
+  });
+  
   $(".category>a").css({display:"block"});
   function hideRecipes(value){
     $(".category>a").each(function(){
-
+      
       //If the recipe is in the search then show it
-      if($(this).html().indexOf(value) > -1){
+      if(($(this).html().toLowerCase().indexOf(value.toLowerCase()) > -1) || value==""){
         if($(this).css("display")=="none"){
           visibleRecipesInCategory[$(this).attr("category")]++;
         }
@@ -77,6 +101,15 @@
     }
   };
 
-  $("#newRecipeButton").click(function(){ $("#newRecipe").show(); });
+  $("#newRecipeButton").click(function(){
+    $("#newRecipe").show();
+    $("#Recipe_title").focus();
+  });
+  $(document).keyup(function(e){
+    if(e.which==27) $("#newRecipe").hide();
+  });
+  $("#newRecipeClose").click(function(){
+    $("#newRecipe").hide();
+  });
 
 </script>

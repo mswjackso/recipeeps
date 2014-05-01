@@ -93,8 +93,8 @@ div.flash {
     display:none;
     position:fixed;
     padding:10px;
-    top:48px;
-    right:250px;
+    top:0px;
+    left:0px;
     min-width:280px;
     opacity:0.95;
     margin:0px 0px 10px 10px;

@@ -28,3 +28,12 @@
   background-color: rgba(0,0,0,.9);
   overflow: auto;
 }
+#newRecipeClose{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+#newRecipeClose:hover{
+  color: red;
+}

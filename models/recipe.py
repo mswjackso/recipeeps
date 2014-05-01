@@ -2,6 +2,7 @@ from datetime import datetime
 
 db.define_table('Picture',
   Field('picture','upload',requires=IS_IMAGE()),
+  Field('recipe_ref', 'reference Recipe')
 )
 
 db.define_table('Recipe',
