@@ -1,0 +1,74 @@
+.recipeImageHolder{
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: calc( 50% - 10px );
+  height: 300px;
+}
+.recipeImage{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.recipeNotes{
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  width: calc( 50% - 10px );
+  height: 300px;
+}
+
+.recipeIngredients{
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  width: calc( 50% - 10px );
+}
+
+.recipeDirections{
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  width: calc( 50% - 10px );
+}
+
+a{
+  color: white;
+}
+a:hover{
+  color: gray;
+  text-decoration: none;
+}
+h3{
+  text-align: center;
+}
+
+#editRecipeButton{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+#editRecipe{
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  color: white;
+  background-color: rgba(0,0,0,.9);
+  overflow: auto;
+}
+#editRecipeClose{
+  position: fixed;
+  top: 10px;
+  right: 30px;
+  cursor: pointer;
+}
+#editRecipeClose:hover{
+  color: red;
+}

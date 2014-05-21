@@ -1,0 +1,67 @@
+{{extend 'layout.html'}}
+
+<link rel="stylesheet" type="text/css" href="{{=URL('static','css/main/recipe.css')}}" />
+
+<center>
+  <h1 class="recipeTitle"><a class="recipeSource" href="{{=recipe.src}}">{{=recipe.title}}</a></h1>
+</center>
+
+<input id="editRecipeButton" type="button" class="btn" value="Edit" />
+
+<div>
+  <div class="recipeImageHolder">
+    {{for picture in pictures:}}
+    <img class="recipeImage scalable centered" src="{{=URL('default', 'download', args=picture.picture)}}">
+    {{pass}}
+  </div>
+  <div class="recipeNotes">
+    <h3>Notes: </h3>
+    <p>
+      {{=recipe.notes}}
+    </p>
+  </div>
+  <div class="recipeIngredients">
+    <h3>Ingredients</h3>
+    <ul>
+      {{for ingredient in recipe.ingredients:}}
+      <li>{{=ingredient}}</li>
+      {{pass}}
+    </ul>
+  </div>
+  <div class="recipeDirections">
+    <h3>Directions</h3>
+    <ol>
+      {{for direction in recipe.directions:}}
+      <li>{{=direction}}</li>
+      {{pass}}
+    </ol>
+  </div>
+</div>
+<div id="editRecipe">
+  <div id="editRecipeClose">X</div>
+  <center>
+    <h1>Edit Recipe</h1>
+    {{=form}}
+  </center>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".scalable").each(function(){
+      if($(this).parent().height()>$(this).parent().width()){
+        $(this).css({"width": "100%"});
+      }else{
+        $(this).css({"height": "100%"});
+      }
+    });
+    $("#editRecipeButton").click(function(){
+      $("#editRecipe").show();
+    });
+    $("#editRecipeClose").click(function(){
+      $("#editRecipe").hide();
+    });
+    $(document).keydown(function(e){
+      if(e.which==27) $("#editRecipe").hide();
+    });
+  });
+</script>

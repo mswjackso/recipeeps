@@ -1,8 +1,8 @@
 from datetime import datetime
 
-db.define_table('Picture',
-  Field('picture','upload',requires=IS_IMAGE()),
-  Field('recipe_ref', 'reference Recipe')
+db.define_table('Category',
+  Field('name','string'),
+  format = '%(name)s'
 )
 
 db.define_table('Recipe',
@@ -14,5 +14,10 @@ db.define_table('Recipe',
   Field('directions','list:string', requires=IS_NOT_EMPTY()),
   Field('src','string'),
   Field('notes','text'),
-  Field('pictures','list:reference Picture'),
+  Field('pictures','list:reference Picture', readable=False, writable=False),
+)
+
+db.define_table('Picture',
+  Field('picture','upload',requires=IS_IMAGE()),
+  Field('recipe_ref', 'reference Recipe')
 )

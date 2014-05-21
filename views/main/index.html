@@ -72,11 +72,11 @@
     console.log($("#searchBarInput").val());
     hideRecipes($("#searchBarInput").val());
   });
-  
+
   $(".category>a").css({display:"block"});
   function hideRecipes(value){
     $(".category>a").each(function(){
-      
+
       //If the recipe is in the search then show it
       if(($(this).html().toLowerCase().indexOf(value.toLowerCase()) > -1) || value==""){
         if($(this).css("display")=="none"){
@@ -110,6 +110,22 @@
   });
   $("#newRecipeClose").click(function(){
     $("#newRecipe").hide();
+  });
+  var cache = {};
+  $( "#Recipe_category" ).autocomplete({
+    delay: 500,
+    source: function( request, response ) {
+      var term = request.term;
+      if ( term in cache ) {
+        response( cache[ term ].retVal );
+        return;
+      }
+
+      $.getJSON( "/json/searchCategory.json", request, function( data, status, xhr ) {
+        cache[ term ] = data;
+        response( data.retVal );
+      });
+    }
   });
 
 </script>

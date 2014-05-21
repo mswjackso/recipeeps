@@ -1,6 +1,8 @@
 def user():
     if(request.args(0)=='logout'):
       auth.logout(next=URL("main", "index"))
+    elif(request.args(0)=='register'):
+      auth.register(next=URL("main", "index"))
     return dict(form=auth())
 
 @cache.action()

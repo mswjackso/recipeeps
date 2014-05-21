@@ -45,11 +45,11 @@ auth = Auth(db)
 crud, service, plugins = Crud(db), Service(), PluginManager()
 
 ## create all tables needed by auth if not custom tables
-auth.define_tables(username=False, signature=False)
+auth.define_tables(username=True, signature=False)
 
 ## configure email
 mail = auth.settings.mailer
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'
+mail.settings.server = 'gae'
 mail.settings.sender = 'you@gmail.com'
 mail.settings.login = 'username:password'
 

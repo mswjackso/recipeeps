@@ -70,6 +70,7 @@
     <div class="flash">{{=response.flash or ''}}</div>
     <div class="navbar-inner">
       <div class="container">
+        {{=response.logo}}
         <ul id="navbar" class="nav pull-right login">{{='auth' in globals() and auth.navbar(mode="dropdown") or ''}}</ul>
       </div>
     </div>
