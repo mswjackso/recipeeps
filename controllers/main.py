@@ -20,14 +20,19 @@ def recipe():
 
   recipe = db(db.Recipe.title==request.args(0).replace("_", " ")).select().first()
   pictures = db(db.Picture.recipe_ref==recipe.id).select()
-  form = SQLFORM(db.Recipe, recipe, deletable=True, showid=False)
+  recipeForm = SQLFORM(db.Recipe, recipe, deletable=True, showid=False)
+  pictureForm = SQLFORM(db.Picture, showid=False)
 
-  if form.process().accepted:
-    if form.vars.delete_this_record!=None:
+  if recipeForm.process().accepted:
+    if recipeForm.vars.delete_this_record!=None:
       session.flash = "Recipe removed"
       redirect(URL('main','index'))
     else:
       session.flash = "Saved"
-      redirect(URL('main','recipe', form.vars.title.replace(" ","_")))
+      redirect(URL('main','recipe', recipeForm.vars.title.replace(" ","_")))
 
-  return dict(recipe=recipe, form=form, pictures=pictures)
+  if pictureForm.process().accepted:
+    session.flash = "Picture added"
+    redirect(URL('main','recipe', recipe.title.replace(" ","_")))
+
+  return dict(recipe=recipe, recipeForm=recipeForm, pictures=pictures, pictureForm=pictureForm)
